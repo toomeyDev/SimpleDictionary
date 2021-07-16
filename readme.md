@@ -1,0 +1,1 @@
+## Simple Python application for searching and viewing terms from a dictionary dataset.
