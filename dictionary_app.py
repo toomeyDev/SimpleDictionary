@@ -48,7 +48,8 @@ def record_log(definition: str, word: str):
                     file.write("- " +word.title() + "\n" + definition)
                     file.write("\n")
                     print("dict_search_records.txt successfully created\n"
-                    +f"file can be found at {os.path.dirname(os.path.abspath(__file__))}.")           
+                    +f"file can be found at {os.path.dirname(os.path.abspath(__file__))}.")
+                    break           
         elif(u_input == 'n' or u_input == 'no'):
             print("Press Enter to continue:")
             input()
