@@ -58,8 +58,8 @@ def record_log(definition: str, word: str):
                     break           
         elif(u_input == 'n' or u_input == 'no'):
             if(input("\nType ('/x' or '/stop') to disable this prompt,\n"
-            +"or press enter to continue:").lower() == '/x'):
-                with open("dict_prefs.txt", "a") as file:
+            +"or press enter to continue:").lower() == '/x' or '/stop'):
+                with open("dict_prefs.txt", "w") as file:
                     file.write("-record_prompt = false")
                     print("dict_prefs.txt successfully updated.\n"
                     +f"file can be found at {os.path.dirname(os.path.abspath(__file__))}.")
