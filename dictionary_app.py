@@ -59,6 +59,10 @@ def record_log(definition: str, word: str):
             
 
 def user_query(user_input = ''):
+    """
+    Evaluate user queries against valid commands from 'phrases' list,
+    handle prompting user to enter more words after a successful sequence.
+    """
     # store list of phrases for checking against user responses
     response_phrases = ('y','yes','n','no',)
     
@@ -105,7 +109,8 @@ def user_query(user_input = ''):
                 +"==================================================")
                   
 
-    def process_input():   
+    def check_input():
+            """Check user input against valid commands from 'phrases' list."""   
             if(user_input == "retry"):
                 retry_prompt()
             elif(user_input in phrases[0:2]):
@@ -117,43 +122,57 @@ def user_query(user_input = ''):
                 print("\n================================================"
                 +"==================================================")
     
-    process_input()
+    check_input()
 
 
 def typo_check(word: str):
-    
+    """
+    First make sure word doesn't match any phrases in data.
+    If exact match cannot be found, attempt to find a single
+    close-matching word to suggest.
+    """
     w_cases = [word, word.lower(), word.title(), word.upper()]
+    dataset = get_word_dataset(word)
     for word in w_cases:
-        if word in phrases:
+        if word in phrases or word in dataset:
             return word
-        for dataset in data:
-            if word in dataset:
-                return word
-    
-    if len(get_close_matches(word, data[0].keys())) > 0:
-        suggested_word = get_close_matches(word, data[0].keys(),n=1)
+
+    if len(get_close_matches(word, dataset.keys())) > 0:
+        suggested_word = get_close_matches(word, dataset.keys(),n=1)
         u_response = input(f"Did you mean {suggested_word[0]}?"
         +"\nEnter ('y'/'yes' if yes, or ('n'/'no) if no: ").lower()
         if(u_response == 'y' or u_response == 'yes'):
             return suggested_word[0]
         else:
-            print(f"Can't find {word} in dictionary, please provide valid English words.") 
+            print(f"Can't find {w_cases[0]} in dictionary, please provide valid English words.") 
             return '' # return blank line so user doesn't see 'none'
     else:
-        print(f"Can't find {word} in dictionary, please provide valid English words.")
+        print(f"Can't find {w_cases[0]} in dictionary, please provide valid English words.")
         # return blank line so user doesn't see 'none'
         return ''
 
 
-def format_output(raw_input):
+def format_word(word):
     """
-    Return a formatted version of the raw input
+    If word is provided in lowercase, convert to titlecase.
+    Otherwise preserve formatting (USA, England, proper nouns etc).
+    """
+    if(word.lower() == word):
+        return word.title()
+    else: 
+        return word
+
+
+def format_definition(raw_definition):
+    """
+    Return a formatted version of the raw definition for a word,
     applies simple line-wrap formatting.
     """
     formatted_output = []
-    for value in raw_input:
+    for value in raw_definition:
         formatted_output.append(fill(value, 72))
     return formatted_output
+
 
 def get_word_dataset(word: str):
     """
@@ -164,6 +183,7 @@ def get_word_dataset(word: str):
             return dataset
     return data[0] # return "data.json" as default dataset
 
+
 def retrieve_definition(word: str) :
     """
     Return the definition (if found) of the
@@ -171,15 +191,12 @@ def retrieve_definition(word: str) :
     English word found in selected dataset.
     """
     curr_data = get_word_dataset(word)
-    if word != "":
-        w_cases = [word, word.lower(), word.title(), word.upper()]
-        for case in w_cases:
-            if case in curr_data:
-                return format_output(curr_data[case])
-            elif case in phrases:
-                return {"NULL":'No results found for this phrase.'}
-    else:
-        return {"NULL":'No results found for this phrase.'}
+    w_cases = [word, word.lower(), word.title(), word.upper()]
+    for case in w_cases:
+        if case in curr_data:
+            return format_definition(curr_data[case])
+        else:
+            return {"NULL":'No results found for this phrase.'}
             
 
 def dictionary_operations():
@@ -198,23 +215,27 @@ def dictionary_operations():
         # retrieve definitions from dictionary
         definition = "\n".join(retrieve_definition(proc_input))
         if("NULL" not in definition):
-            print(proc_input.title() + f"\n{definition}")
-            record_log(str(definition), proc_input)
+            print(format_word(proc_input) + f"\n{definition}")
+            record_log(str(definition), proc_input)         
 
     def cleanup(proc_input=""):
         if("NULL" not in retrieve_definition(proc_input)):
             user_query("retry")
             os.system('cls')
 
+    # main sequence
     u_input = process_search_phrase(input("Please enter a word: "))
     display_output(u_input)
     cleanup(u_input)
 
+
 def main():
+    # display commands and instructions at startup
     user_query("/help")
     while(True) :
         dictionary_operations()
 
-# startup sequence
+
+# startup
 if __name__ == "__main__":
     main()
