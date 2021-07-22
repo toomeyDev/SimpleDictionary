@@ -18,6 +18,7 @@ def load_dataset(data_path: str) :
 # store dictionary dataset for access by program, test_data for tests
 data = []
 data.append(load_dataset("dictionary_data/test_data.json"))
+data.append(load_dataset("dictionary_data/web_data.json"))
 data.append(load_dataset("dictionary_data/webstersenglishdictionary.json"))
 
 # list of command phrases which can be entered as user input
@@ -186,7 +187,7 @@ def format_definition(raw_definition, dataset=data[0]):
     Return a formatted version of the raw definition for a word,
     applies simple line-wrap formatting.
     """
-    if(dataset == data[0]):
+    if(type(raw_definition) == list):
         formatted_output = []
         for value in raw_definition:
             formatted_output.append(fill(value, 72))
