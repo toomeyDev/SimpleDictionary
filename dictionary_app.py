@@ -17,8 +17,8 @@ def load_dataset(data_path: str) :
 
 # store dictionary dataset for access by program, test_data for tests
 data = []
-data.append(load_dataset("data.json"))
-data.append(load_dataset("test_data.json"))
+data.append(load_dataset("dictionary_data/test_data.json"))
+data.append(load_dataset("dictionary_data/webstersenglishdictionary.json"))
 
 # list of command phrases which can be entered as user input
 phrases = ('/h','/help',
@@ -57,8 +57,9 @@ def record_log(definition: str, word: str):
                     +f"file can be found at {os.path.dirname(os.path.abspath(__file__))}.")
                     break           
         elif(u_input == 'n' or u_input == 'no'):
-            if(input("\nType ('/x' or '/stop') to disable this prompt,\n"
-            +"or press enter to continue:").lower() == '/x' or '/stop'):
+            u_input = input("\nType ('/x' or '/stop') to disable this prompt,\n"
+            +"or press enter to continue:").lower()
+            if(u_input == '/x' or u_input == '/stop'):
                 with open("dict_prefs.txt", "w") as file:
                     file.write("-record_prompt = false")
                     print("dict_prefs.txt successfully updated.\n"
@@ -180,15 +181,20 @@ def format_word(word):
         return word
 
 
-def format_definition(raw_definition):
+def format_definition(raw_definition, dataset=data[0]):
     """
     Return a formatted version of the raw definition for a word,
     applies simple line-wrap formatting.
     """
-    formatted_output = []
-    for value in raw_definition:
-        formatted_output.append(fill(value, 72))
-    return formatted_output
+    if(dataset == data[0]):
+        formatted_output = []
+        for value in raw_definition:
+            formatted_output.append(fill(value, 72))
+        return formatted_output
+    else:
+        formatted_output = [""]
+        formatted_output[0] = fill(raw_definition,72)
+        return formatted_output
 
 
 def get_word_dataset(word: str):
@@ -211,7 +217,7 @@ def retrieve_definition(word: str) :
     w_cases = [word, word.lower(), word.title(), word.upper()]
     for case in w_cases:
         if case in curr_data:
-            return format_definition(curr_data[case])
+            return format_definition(curr_data[case], curr_data)
         else:
             return {"NULL":'No results found for this phrase.'}
             
