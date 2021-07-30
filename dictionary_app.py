@@ -15,15 +15,18 @@ def load_dataset(data_path: str) :
     json_file = open(data_path)
     return json.load(json_file)
 
-# store dictionary dataset for access by program, test_data for tests
+# store dictionary datasets for access by program
 data = []
 data.append(load_dataset("dictionary_data/test_data.json"))
 data.append(load_dataset("dictionary_data/web_data.json"))
 data.append(load_dataset("dictionary_data/webstersenglishdictionary.json"))
 
+# store list of commands for use during runtime
+commands = load_dataset('dict_commands.json')
+
 # list of command phrases which can be entered as user input
-phrases = ('/h','/help',
-    '/q','/quit','/e','/exit','/x', '/file_prompt_enable')
+phrases = ('/h','/help', '/commands',
+    '/q','/quit','/e', '/end', '/x', '/exit', '/file_prompt_enable')
 
 def record_log(definition: str, word: str):
     print
@@ -118,10 +121,23 @@ def user_query(user_input = ''):
                 +"To exit the program, enter one of the following phrases"
                 +" preceeded by a '/' character, ie: '/q' or '/quit'"
                 +"\n('x', 'exit', 'q', 'quit', 'e', 'end')"
-                +"To see this message again, type ('/h' or '/help')"
+                +"To see this message again, type ('/h' or '/help')\n"
+                +"To see a full list of available commands, type ('/commands')"
                 +"\n================================================"
                 +"==================================================")
                   
+
+    def display_commands():
+        """
+        Display full list of available commands executed with the '/command'
+        format, ie /exit, /help, /file_prompt_enable.
+        """
+        print("Complete list of commands useable at word prompt\n"
+        +"Format is as follows:\n'Name of command - description' : "
+        +"[comma separated list of phrases to execute the command]\n" 
+        +"--------------------------------------------------------")
+        for key, value in commands.items():
+            print(f"{key} {value}")
 
     def check_input():
             """Check user input against valid commands from 'phrases' list."""   
@@ -129,10 +145,12 @@ def user_query(user_input = ''):
                 retry_prompt()
             elif(user_input in phrases[0:2]):
                 display_help()
-            elif(user_input in phrases[2:7]):
+            elif(user_input == phrases[2]):
+                display_commands()
+            elif(user_input in phrases[3:9]):
                 os.system('cls')
                 terminate_program(user_input)
-            elif(user_input == phrases[7]):
+            elif(user_input == phrases[9]):
                 os.system('cls')
                 with open("dict_prefs.txt", 'w') as file:
                     file.write('-record_prompt = true')
