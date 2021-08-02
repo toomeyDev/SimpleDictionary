@@ -15,6 +15,7 @@ def load_dataset(data_path: str) :
     json_file = open(data_path)
     return json.load(json_file)
 
+
 # store dictionary datasets for access by program
 data = []
 data.append(load_dataset("dictionary_data/test_data.json"))
@@ -28,11 +29,13 @@ commands = load_dataset('dict_commands.json')
 phrases = ('/h','/help', '/commands',
     '/q','/quit','/e', '/end', '/x', '/exit', '/file_prompt_enable', '/data', '/datasets')
 
+
 def display_data():
     """Display all available datasets found in 'dictionary_data' folder"""
     print(f"{len(data)} datasets available:\n")
     filenames = [f for f in os.listdir('dictionary_data') if os.path.isfile(os.path.join('dictionary_data', f))]
     print(filenames)
+
 
 def record_log(definition: str, word: str):
     print
@@ -45,7 +48,7 @@ def record_log(definition: str, word: str):
                 if "false" in content:
                     break
         u_input = input("Save record of this search? (Enter ('y'/'yes')" 
-        + " if yes, or ('n'/'no') if no) :").lower()
+        + " if yes, or ('n'/'no') if no) : ").lower()
         if(u_input == 'y' or u_input == 'yes'):
             if(os.path.exists("dict_search_records.txt")):
                 print("Saving to logfile...")
@@ -53,7 +56,7 @@ def record_log(definition: str, word: str):
                     file.write("- " + word.title() + "\n" + definition)
                     file.write("\n")
                 print("Saved succesfully, view records in dict_search_records.txt."
-                +"\nPress Enter to continue:")
+                +"\nPress Enter to continue: ")
                 input()
                 break
             else:
@@ -68,7 +71,7 @@ def record_log(definition: str, word: str):
                     break           
         elif(u_input == 'n' or u_input == 'no'):
             u_input = input("\nType ('/x' or '/stop') to disable this prompt,\n"
-            +"or press enter to continue:").lower()
+            +"or press enter to continue: ").lower()
             if(u_input == '/x' or u_input == '/stop'):
                 with open("dict_prefs.txt", "w") as file:
                     file.write("-record_prompt = false")
@@ -78,7 +81,7 @@ def record_log(definition: str, word: str):
                     +" to enter a word to turn file prompt back on.")
             break
         else:
-            print("Expecting ('y'/'yes' or 'n'/'no') :")
+            print("Expecting ('y'/'yes' or 'n'/'no') : ")
             
 
 def user_query(user_input = ''):
@@ -103,7 +106,7 @@ def user_query(user_input = ''):
         """
         print("===================================================="
         + "==========================================================\n"
-        +"Search for more terms?\nEnter ('y'/'yes' or 'n'/'no') :")
+        +"Search for more terms?\nEnter ('y'/'yes' or 'n'/'no') : ")
         while(True):
             u_input = input().lower()
             if(u_input in response_phrases[0:2]):
@@ -113,7 +116,7 @@ def user_query(user_input = ''):
                 os.system('cls')
                 terminate_program()
             else:
-                print("Expecting ('y'/'yes') or ('n'/'no') :\n")
+                print("Expecting ('y'/'yes') or ('n'/'no') : ")
 
 
     def display_help():
@@ -122,8 +125,8 @@ def user_query(user_input = ''):
         to be called at startup or whenever '/help' or
         '/h' is entered.
         """
-        print("Welcome to the dictionary, the following dataset has been" 
-                +" used to generate these definitions: (link goes here)\n"
+        print("Welcome to the dictionary, to see datasets that were"
+                +" used to generate definitions, type ('/datasets')\n"
                 +"To exit the program, enter one of the following phrases"
                 +" preceeded by a '/' character, ie: '/q' or '/quit'"
                 +"\n('x', 'exit', 'q', 'quit', 'e', 'end')"
@@ -144,6 +147,7 @@ def user_query(user_input = ''):
         +"--------------------------------------------------------")
         for key, value in commands.items():
             print(f"{key} {value}")
+
 
     def check_input():
             """Check user input against valid commands from 'phrases' list."""   
@@ -167,6 +171,7 @@ def user_query(user_input = ''):
                 print("\n================================================"
                 +"==================================================")
     
+    # call check_input whenever user_query is executed
     check_input()
 
 
@@ -231,7 +236,7 @@ def get_word_dataset(word: str):
     for dataset in data:
         if word in dataset:
             return dataset
-    return data[0] # return "data.json" as default dataset
+    return data[0] # return "web_data.json" as default dataset
 
 
 def retrieve_definition(word: str) :
