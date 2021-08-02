@@ -26,7 +26,13 @@ commands = load_dataset('dict_commands.json')
 
 # list of command phrases which can be entered as user input
 phrases = ('/h','/help', '/commands',
-    '/q','/quit','/e', '/end', '/x', '/exit', '/file_prompt_enable')
+    '/q','/quit','/e', '/end', '/x', '/exit', '/file_prompt_enable', '/data', '/datasets')
+
+def display_data():
+    """Display all available datasets found in 'dictionary_data' folder"""
+    print(f"{len(data)} datasets available:\n")
+    filenames = [f for f in os.listdir('dictionary_data') if os.path.isfile(os.path.join('dictionary_data', f))]
+    print(filenames)
 
 def record_log(definition: str, word: str):
     print
@@ -155,6 +161,8 @@ def user_query(user_input = ''):
                 with open("dict_prefs.txt", 'w') as file:
                     file.write('-record_prompt = true')
                 print("File prompt after search enabled.")
+            elif(user_input in phrases[10:12]):
+                display_data()
             else:
                 print("\n================================================"
                 +"==================================================")

@@ -3,5 +3,8 @@
     "Exit - 'close the program when entered during word prompt' :":["/q","/quit","/e","/end", "/x", "/exit"],
     "Enable file prompt - 'enable file prompt after searching a term in the dictionary' :":["/fpe","/file_prompt_enable"],
     "Disable file prompt - 'disable file prompt to user after searching a term in the dictionary' :":["/dfp", "/file_prompt_disable"],
-    "Commands - 'display complete list of available commands which can be entered during word prompt' :":["/prompt, /p"]
+    "Commands - 'display complete list of available commands which can be entered during word prompt' :":["/prompt, /p"],
+    "Yes - 'confirm a choice during a prompt or question' :":["yes", "y", "confirm", "ok"],
+    "No - 'refuse a choice during a prompt or question' :":["no", "n"],
+    "Datasets - 'get the list of currently available word/definition datasets from dictionary_data folder' :":["/data", "/datasets"]
 }
