@@ -73,12 +73,20 @@ def record_log(definition: str, word: str):
             u_input = input("\nType ('/x' or '/stop') to disable this prompt,\n"
             +"or press enter to continue: ").lower()
             if(u_input == '/x' or u_input == '/stop'):
-                with open("dict_prefs.txt", "w") as file:
-                    file.write("-record_prompt = false")
-                    print("dict_prefs.txt successfully updated.\n"
-                    +f"file can be found at {os.path.dirname(os.path.abspath(__file__))}.")
-                    print("Enter '/file_prompt_enable' when prompted"
-                    +" to enter a word to turn file prompt back on.")
+                if(os.path.exists("dict_prefs.txt")):
+                    with open("dict_prefs.txt", "w") as file:
+                        file.write("-record_prompt = false")
+                        print("dict_prefs.txt successfully updated.\n")
+                        print("Enter '/file_prompt_enable' when prompted"
+                        +" to enter a word to turn file prompt back on.")
+                else:
+                    print("dict_prefs.txt not found, creating prefs file...")
+                    with open("dict_prefs.txt", "w") as file:
+                        file.write("-record_prompt = false")
+                        print("dict_prefs.txt successfully created.\n"
+                        +f"file can be found at {os.path.dirname(os.path.abspath(__file__))}.")
+                        print("Enter '/file_prompt_enable' when prompted"
+                        +" to enter a word to turn file prompt back on.")
             break
         else:
             print("Expecting ('y'/'yes' or 'n'/'no') : ")
@@ -162,9 +170,10 @@ def user_query(user_input = ''):
                 terminate_program(user_input)
             elif(user_input == phrases[9]):
                 os.system('cls')
-                with open("dict_prefs.txt", 'w') as file:
-                    file.write('-record_prompt = true')
-                print("File prompt after search enabled.")
+                if(os.path.exists("dict_prefs.txt")):
+                    with open("dict_prefs.txt", 'w') as file:
+                        file.write('-record_prompt = true')
+                    print("File prompt after search enabled.")
             elif(user_input in phrases[10:12]):
                 display_data()
             else:
