@@ -191,24 +191,42 @@ def typo_check(word: str):
     close-matching word to suggest.
     """
     w_cases = [word, word.lower(), word.title(), word.upper()]
-    dataset = get_word_dataset(word)
-    for word in w_cases:
-        if word in phrases or word in dataset:
-            return word
+    for case in w_cases:
+        if(get_word_dataset(case) != None):
+            dataset = get_word_dataset(case)
+            for word in w_cases:
+                if word in phrases or word in dataset:
+                    return word
+            break
+    
 
-    if len(get_close_matches(word, dataset.keys())) > 0:
-        suggested_word = get_close_matches(word, dataset.keys(),n=1)
-        u_response = input(f"Did you mean {suggested_word[0]}?"
-        +"\nEnter ('y'/'yes' if yes, or ('n'/'no) if no: ").lower()
-        if(u_response == 'y' or u_response == 'yes'):
-            return suggested_word[0]
-        else:
-            print(f"Can't find {w_cases[0]} in dictionary, please provide valid English words.") 
-            return '' # return blank line so user doesn't see 'none'
-    else:
-        print(f"Can't find {w_cases[0]} in dictionary, please provide valid English words.")
-        # return blank line so user doesn't see 'none'
-        return ''
+    # if word isn't found in the current dataset, search for a close match
+        suggested_word = None
+        for case in w_cases:
+            if(suggest_word(case) != None):
+                suggested_word = suggest_word(case)
+                break
+        
+        if(suggested_word != None):
+            u_response = input(f"Did you mean {suggested_word[0]}?"
+            +"\nEnter ('y'/'yes' if yes, or ('n'/'no) if no: ").lower()
+            if(u_response == 'y' or u_response == 'yes'):
+                return suggested_word[0]
+            else:
+                print(f"Can't find {w_cases[0]} in dictionary, please provide valid English words.") 
+                return '' # return blank line so user doesn't see 'none'
+    
+    # if word isn't found in the current dataset and there are no similar words, prompt the user
+    print(f"Can't find {w_cases[0]} in dictionary, please provide valid English words.") 
+    return '' # return blank line so user doesn't see 'none'
+
+
+def suggest_word(word: str):
+    """Take provided word and search for any similar words in available datasets."""
+    for dataset in data:
+        if(len(get_close_matches(word, dataset))>1):
+            return get_close_matches(word, dataset,n=1)
+    return None # return none if no viable suggestions are found
 
 
 def format_word(word):
@@ -245,7 +263,9 @@ def get_word_dataset(word: str):
     for dataset in data:
         if word in dataset:
             return dataset
-    return data[0] # return "web_data.json" as default dataset
+    
+    # return None if word not found
+    return None
 
 
 def retrieve_definition(word: str) :
@@ -255,12 +275,14 @@ def retrieve_definition(word: str) :
     English word found in selected dataset.
     """
     curr_data = get_word_dataset(word)
-    w_cases = [word, word.lower(), word.title(), word.upper()]
-    for case in w_cases:
-        if case in curr_data:
-            return format_definition(curr_data[case], curr_data)
-        else:
-            return {"NULL":'No results found for this phrase.'}
+    if(curr_data != None):
+        w_cases = [word, word.lower(), word.title(), word.upper()]
+        for case in w_cases:
+            if case in curr_data:
+                return format_definition(curr_data[case], curr_data)
+            else:
+                return {"NULL":'No results found for this phrase.'}
+    return {""} # return a blank line if dataset is None
             
 
 def dictionary_operations():
