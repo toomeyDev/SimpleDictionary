@@ -1,6 +1,8 @@
 {
     "Help - 'display most important commands and print startup message' :":["/h", "/help"],
     "Exit - 'close the program when entered during word prompt' :":["/q","/quit","/e","/end", "/x", "/exit"],
+    "About - 'display information about this program, sources used, development history etc' :":["/about"],
+    "Clear Screen - 'clear the screen of any text from output/search process' :":["/clear", "/cls"],
     "Enable file prompt - 'enable file prompt after searching a term in the dictionary' :":["/fpe","/file_prompt_enable"],
     "Disable file prompt - 'disable file prompt to user after searching a term in the dictionary' :":["/dfp", "/file_prompt_disable"],
     "Commands - 'display complete list of available commands which can be entered during word prompt' :":["/prompt, /p"],

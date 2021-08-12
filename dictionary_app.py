@@ -27,7 +27,7 @@ commands = load_dataset('dict_commands.json')
 
 # list of command phrases which can be entered as user input
 phrases = ('/h','/help', '/commands',
-    '/q','/quit','/e', '/end', '/x', '/exit', '/file_prompt_enable', '/data', '/datasets')
+    '/q','/quit','/e', '/end', '/x', '/exit', '/file_prompt_enable', '/data', '/datasets', '/clear', '/cls', '/about')
 
 
 def display_data():
@@ -92,6 +92,13 @@ def record_log(definition: str, word: str):
             print("Expecting ('y'/'yes' or 'n'/'no') : ")
             
 
+def clear_screen():
+    """Clear the screen of any present output."""
+    if os.name == 'nt':
+        os.system('cls') # use format for NT-systems if running windows
+    else:
+        os.system('clear') # use format for linux/osx if not running windows
+            
 def user_query(user_input = ''):
     """
     Evaluate user queries against valid commands from 'phrases' list,
@@ -118,10 +125,10 @@ def user_query(user_input = ''):
         while(True):
             u_input = input().lower()
             if(u_input in response_phrases[0:2]):
-                os.system('cls')
+                clear_screen()
                 break
             elif(u_input in response_phrases[2:4]):
-                os.system('cls')
+                clear_screen()
                 terminate_program()
             else:
                 print("Expecting ('y'/'yes') or ('n'/'no') : ")
@@ -166,16 +173,18 @@ def user_query(user_input = ''):
             elif(user_input == phrases[2]):
                 display_commands()
             elif(user_input in phrases[3:9]):
-                os.system('cls')
+                clear_screen()
                 terminate_program(user_input)
             elif(user_input == phrases[9]):
-                os.system('cls')
+                clear_screen()
                 if(os.path.exists("dict_prefs.txt")):
                     with open("dict_prefs.txt", 'w') as file:
                         file.write('-record_prompt = true')
                     print("File prompt after search enabled.")
             elif(user_input in phrases[10:12]):
                 display_data()
+            elif(user_input in phrases[12:14]):
+                clear_screen()
             else:
                 print("\n================================================"
                 +"==================================================")
@@ -264,6 +273,10 @@ def get_word_dataset(word: str):
         if word in dataset:
             return dataset
     
+    # should use dict_commands.json and commands functionality once implemented
+    if word in phrases:
+        return data[1]
+    
     # return None if word not found
     return None
 
@@ -307,7 +320,7 @@ def dictionary_operations():
     def cleanup(proc_input=""):
         if("NULL" not in retrieve_definition(proc_input)):
             user_query("retry")
-            os.system('cls')
+            clear_screen()
 
     # main sequence
     u_input = process_search_phrase(input("Please enter a word: "))
