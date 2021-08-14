@@ -1,6 +1,6 @@
 ## Simple Python application for searching and viewing terms from a dictionary dataset.
 
-Currently console-only, with plans to implement a GUI interface using the tkinter library in the future.
+Currently cmd/terminal-only, may implement a GUI interface using the tkinter library in the future.
 
 **To get a list of basic commands & instructions for using the program, type '/help' when prompted to enter a term:**
 

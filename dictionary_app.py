@@ -26,8 +26,9 @@ data.append(load_dataset("dictionary_data/webstersenglishdictionary.json"))
 commands = load_dataset('dict_commands.json')
 
 # list of command phrases which can be entered as user input
-phrases = ('/h','/help', '/commands',
-    '/q','/quit','/e', '/end', '/x', '/exit', '/file_prompt_enable', '/data', '/datasets', '/clear', '/cls', '/about')
+phrases = ('/h','/help', '/commands', '/q','/quit',
+     '/e', '/end', '/x', '/exit', '/file_prompt_enable', 
+     '/data', '/datasets', '/clear', '/cls', '/about')
 
 
 def display_data():
@@ -51,24 +52,24 @@ def record_log(definition: str, word: str):
         + " if yes, or ('n'/'no') if no) : ").lower()
         if(u_input == 'y' or u_input == 'yes'):
             if(os.path.exists("dict_search_records.txt")):
-                print("Saving to logfile...")
+                print("\nSaving to logfile...")
                 with open("dict_search_records.txt", 'a') as file:
                     file.write("- " + word.title() + "\n" + definition)
                     file.write("\n")
                 print("Saved succesfully, view records in dict_search_records.txt."
-                +"\nPress Enter to continue: ")
+                +"\nPress Enter to continue: \n")
                 input()
                 break
             else:
-                print("Logfile not found, creating new logfile...")
+                print("\nLogfile not found, creating new logfile...")
                 with open("dict_search_records.txt", 'a') as file:
                     file.write("Record of searches made with this"
                     +" installation of dictionary_app:\n")
                     file.write("- " +word.title() + "\n" + definition)
-                    file.write("\n")
+                    file.write("\n\n")
                     print("dict_search_records.txt successfully created\n"
                     +f"file can be found at {os.path.dirname(os.path.abspath(__file__))}.")
-                    break           
+                    break
         elif(u_input == 'n' or u_input == 'no'):
             u_input = input("\nType ('/x' or '/stop') to disable this prompt,\n"
             +"or press enter to continue: ").lower()
@@ -76,7 +77,7 @@ def record_log(definition: str, word: str):
                 if(os.path.exists("dict_prefs.txt")):
                     with open("dict_prefs.txt", "w") as file:
                         file.write("-record_prompt = false")
-                        print("dict_prefs.txt successfully updated.\n")
+                        print("\ndict_prefs.txt successfully updated.\n")
                         print("Enter '/file_prompt_enable' when prompted"
                         +" to enter a word to turn file prompt back on.")
                 else:
@@ -140,15 +141,15 @@ def user_query(user_input = ''):
         to be called at startup or whenever '/help' or
         '/h' is entered.
         """
-        print("Welcome to the dictionary, to see datasets that were"
-                +" used to generate definitions, type ('/datasets')\n"
-                +"To exit the program, enter one of the following phrases"
-                +" preceeded by a '/' character, ie: '/q' or '/quit'"
-                +"\n('x', 'exit', 'q', 'quit', 'e', 'end')"
-                +"To see this message again, type ('/h' or '/help')\n"
-                +"To see a full list of available commands, type ('/commands')"
-                +"\n================================================"
-                +"==================================================")
+        print("Welcome to the dictionary, to see datasets that\n"
+                +"were used to generate definitions, type ('/datasets').\n"
+                +"\nTo exit the program, enter one of the following\n"
+                +"preceeded by a '/' character, ie: '/q' or '/quit'.\n"
+                +"-> ('x', 'exit', 'q', 'quit', 'e', 'end')\n"
+                +"\nTo see this message again, type ('/h' or '/help').\n"
+                +"To see a full list of available commands, \n"
+                +"type ('/commands')."
+                +"\n===================================================")
                   
 
     def display_commands():
