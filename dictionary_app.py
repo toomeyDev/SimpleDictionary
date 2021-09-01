@@ -99,7 +99,8 @@ def clear_screen():
         os.system('cls') # use format for NT-systems if running windows
     else:
         os.system('clear') # use format for linux/osx if not running windows
-            
+
+
 def user_query(user_input = ''):
     """
     Evaluate user queries against valid commands from 'phrases' list,
@@ -120,8 +121,7 @@ def user_query(user_input = ''):
         """
         Prompt if user would like to continue searching the dictionary.
         """
-        print("===================================================="
-        + "==========================================================\n"
+        print("========================================================\n"
         +"Search for more terms?\nEnter ('y'/'yes' or 'n'/'no') : ")
         while(True):
             u_input = input().lower()
@@ -149,7 +149,7 @@ def user_query(user_input = ''):
                 +"\nTo see this message again, type ('/h' or '/help').\n"
                 +"To see a full list of available commands, \n"
                 +"type ('/commands')."
-                +"\n===================================================")
+                +"\n======================================================")
                   
 
     def display_commands():
@@ -187,8 +187,7 @@ def user_query(user_input = ''):
             elif(user_input in phrases[12:14]):
                 clear_screen()
             else:
-                print("\n================================================"
-                +"==================================================")
+                print("\n==================================================")
     
     # call check_input whenever user_query is executed
     check_input()
@@ -258,7 +257,7 @@ def format_definition(raw_definition, dataset=data[0]):
     if(type(raw_definition) == list):
         formatted_output = []
         for value in raw_definition:
-            formatted_output.append(fill(value, 72))
+            formatted_output.append(f"{fill(value, 72)}\n")
         return formatted_output
     else:
         formatted_output = [""]
@@ -315,7 +314,7 @@ def dictionary_operations():
         # retrieve definitions from dictionary
         definition = "\n".join(retrieve_definition(proc_input))
         if("NULL" not in definition):
-            print(format_word(proc_input) + f"\n{definition}")
+            print(format_word(proc_input) + f"\n\n{definition}")
             record_log(str(definition), proc_input)         
 
     def cleanup(proc_input=""):
