@@ -48,7 +48,7 @@ def record_log(definition: str, word: str):
                 content = file.read()
                 if "false" in content:
                     break
-        u_input = input("Save record of this search? (Enter ('y'/'yes')" 
+        u_input = input("Save record of this search? \n(Enter ('y'/'yes')" 
         + " if yes, or ('n'/'no') if no) : ").lower()
         if(u_input == 'y' or u_input == 'yes'):
             if(os.path.exists("dict_search_records.txt")):
@@ -257,13 +257,20 @@ def format_definition(raw_definition, dataset=data[0]):
     if(type(raw_definition) == list):
         formatted_output = []
         for value in raw_definition:
-            formatted_output.append(f"{fill(value, 72)}\n")
+            #formatted_output.append(f"{fill(value, 72)}\n")
+            formatted_output.append(f"{format_str_len(value)}\n")
         return formatted_output
     else:
         formatted_output = [""]
-        formatted_output[0] = fill(raw_definition,72)
+        formatted_output[0] = f"{fill(raw_definition,72)}\n"
         return formatted_output
-
+    
+def format_str_len(str_input: str, str_len=72):
+    """
+    Take in a string and format it to be within specific
+    length parameter.
+    """
+    return fill(str_input, str_len)
 
 def get_word_dataset(word: str):
     """
