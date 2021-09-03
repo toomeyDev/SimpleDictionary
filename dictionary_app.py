@@ -157,12 +157,13 @@ def user_query(user_input = ''):
         Display full list of available commands executed with the '/command'
         format, ie /exit, /help, /file_prompt_enable.
         """
-        print("Complete list of commands useable at word prompt\n"
+        print("\nComplete list of commands useable at word prompt\n"
         +"Format is as follows:\n'Name of command - description' : "
-        +"[comma separated list of phrases to execute the command]\n" 
+        +"[comma separated list\nof phrases to execute the command]\n" 
         +"--------------------------------------------------------")
         for key, value in commands.items():
-            print(f"{key} {value}")
+            output = format_str_len(f"{key} {value}")
+            print(f"{output}\n")
 
 
     def check_input():
@@ -257,12 +258,11 @@ def format_definition(raw_definition, dataset=data[0]):
     if(type(raw_definition) == list):
         formatted_output = []
         for value in raw_definition:
-            #formatted_output.append(f"{fill(value, 72)}\n")
             formatted_output.append(f"{format_str_len(value)}\n")
         return formatted_output
     else:
         formatted_output = [""]
-        formatted_output[0] = f"{fill(raw_definition,72)}\n"
+        formatted_output[0] = f"{format_str_len(raw_definition)}\n"
         return formatted_output
     
 def format_str_len(str_input: str, str_len=72):
