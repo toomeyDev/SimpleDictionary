@@ -150,7 +150,16 @@ def user_query(user_input = ''):
                 +"To see a full list of available commands, \n"
                 +"type ('/commands')."
                 +"\n======================================================")
-                  
+
+
+    def display_about():
+        """Display information about this program,
+        recent changelog."""
+        clear_screen()
+        print("About SimpleDictionary:\n")
+        print("This is a simple dictionary application for searching\n")
+        print("for words and phrases within a set of dictionary data.\n")
+        print("\n======================================================")
 
     def display_commands():
         """
@@ -164,7 +173,7 @@ def user_query(user_input = ''):
         for key, value in commands.items():
             output = format_str_len(f"{key} {value}")
             print(f"{output}\n")
-
+    
 
     def check_input():
             """Check user input against valid commands from 'phrases' list."""   
@@ -187,6 +196,8 @@ def user_query(user_input = ''):
                 display_data()
             elif(user_input in phrases[12:14]):
                 clear_screen()
+            elif(user_input in phrases[14:15]):
+                display_about()
             else:
                 print("\n==================================================")
     
