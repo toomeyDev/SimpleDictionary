@@ -1,6 +1,6 @@
 ## Simple Python application for searching and viewing terms from a dictionary dataset.
 
-Currently cmd/terminal-only, may implement a GUI interface using the tkinter library in the future.
+*Branch to track development of a GUI for the SimpleDictionary project.*
 
 **To get a list of basic commands & instructions for using the program, type '/help' when prompted to enter a term:**
 
